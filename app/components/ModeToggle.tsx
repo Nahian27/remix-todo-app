@@ -10,7 +10,7 @@ const setTheme = (isDarkMode: boolean) => {
 
 const ModeToggle = () => {
     const [isDarkMode, setIsDarkMode] = useState(
-        Cookie.get('darkMode') === 'true' ? true : false
+        Cookie.get('darkMode') === 'true' ? false : true
     );
 
     const handleToggle = () => {
