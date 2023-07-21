@@ -1,24 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion"
-import { supabase } from "~/lib/initSupabase"
 import { useState } from "react"
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 
 
 export default function Todo(p: { slug: number, i: number, title: string, text: string }) {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const deleteHandler = () => {
-        setIsLoading(true)
-        // supabase
-        //     .from('Todos')
-        //     .delete()
-        //     .eq('id', p.slug)
-
-    }
-
     return (<>
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
             <motion.div
                 layout
                 key={p.slug}
@@ -36,15 +26,23 @@ export default function Todo(p: { slug: number, i: number, title: string, text: 
                     </div>
                     <div className='card-actions flex justify-end gap-3'>
                         <Link prefetch="viewport" to={"todo/" + p.slug} className='btn btn-secondary'>Edit</Link>
-                        <button
-                            className={`btn btn-accent ${isLoading && 'loading loading-bars loading-lg'}`}
-                            onClick={deleteHandler}>
-                            {isLoading ? '' : 'Delete'}
-                        </button>
+                        <Form method="post">
+                            <input type='hidden' name="id" value={p.slug} />
+                            <button
+                                className={isLoading ? 'btn btn-warning' : 'btn btn-accent'}
+                                type="submit"
+                                name="_action"
+                                value='delete'
+                                onClick={() => setIsLoading(true)}
+                            >
+                                {isLoading ? 'Deleting' : 'Delete'}
+                            </button>
+                        </Form>
+
                     </div>
                 </div>
             </motion.div >
-        </AnimatePresence>
+        </AnimatePresence >
     </>
 
     )

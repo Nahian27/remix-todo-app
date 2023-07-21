@@ -16,12 +16,23 @@ export async function loader() {
 }
 export async function action({ request }: ActionArgs) {
 	const formData = await request.formData();
-	const todo = {
-		title: formData.get("title"),
-		content: formData.get("content")
+	const { _action, title, content, id } = Object.fromEntries(formData)
+
+	if (_action === 'create') {
+		const todo = {
+			title: title,
+			content: content
+		}
+		return await supabase.from('Todos').insert(todo)
 	}
-	await supabase.from('Todos').insert(todo)
-	return null
+	if (_action === 'delete') {
+		return await supabase
+			.from('Todos')
+			.delete()
+			.eq('id', id)
+	}
+
+
 }
 export default function Index() {
 

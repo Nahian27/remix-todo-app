@@ -2,7 +2,7 @@ import type { Config } from 'tailwindcss'
 
 export default {
   daisyui: {
-    themes: ["business"],
+    themes: ["business", "corporate"],
   },
   content: ['./app/**/*.{js,jsx,ts,tsx}'],
   theme: {

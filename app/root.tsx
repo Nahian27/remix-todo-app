@@ -9,6 +9,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import ModeToggle from "./components/ModeToggle";
 
 export const links: LinksFunction = () => [
   // ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -25,6 +26,7 @@ export default function App() {
         <Links />
       </head>
       <body className="sm:p-5">
+        <ModeToggle />
         <Outlet />
         <ScrollRestoration />
         <Scripts />
