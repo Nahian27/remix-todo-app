@@ -1,21 +1,21 @@
-import { motion, AnimatePresence } from "framer-motion"
-import { useState } from "react"
-import { Form, Link } from "@remix-run/react";
+import {motion} from "framer-motion"
+import {Link, useFetcher} from "@remix-run/react";
 
 
 export default function Todo(p: { slug: number, i: number, title: string, text: string }) {
-
-    const [isLoading, setIsLoading] = useState(false);
+    const fetcher = useFetcher()
+    const busy = fetcher.formData?.get('_action') === 'delete'
+    const isJavascriptEnabled = typeof window !== 'undefined';
 
     return (<>
-        <AnimatePresence mode="wait">
+
             <motion.div
                 layout
                 key={p.slug}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0 }}
-                transition={{ ease: "backOut", duration: 0.5, delay: p.i * 0.1, layout: { type: "spring", duration: 1 } }}
+                initial={{opacity: isJavascriptEnabled ? 0 : 1, y: isJavascriptEnabled ? 100 : 0}}
+                animate={{opacity: 1, y: 0}}
+                exit={{opacity: 0, scale: 0.75}}
+                transition={{delay: p.i * 0.1, type: 'spring', duration: 1}}
                 className='card shadow-lg bg-base-200 w-80 sm:h-96 h-60'>
                 <div className="card-body">
                     <h2 className='card-title'>
@@ -25,25 +25,24 @@ export default function Todo(p: { slug: number, i: number, title: string, text: 
                         {p.text}
                     </div>
                     <div className='card-actions flex justify-end gap-3'>
-                        <Link prefetch="viewport" to={"todo/" + p.slug} className='btn btn-secondary'>Edit</Link>
-                        <Form method="post">
-                            <input type='hidden' name="id" value={p.slug} />
+                        <Link prefetch='viewport' to={p.slug.toString()} className='btn btn-secondary'>Edit</Link>
+                        <fetcher.Form method="post">
+                            <input type='hidden' name="id" value={p.slug}/>
                             <button
-                                className={isLoading ? 'btn btn-warning' : 'btn btn-accent'}
+                                className={busy ? 'btn btn-warning' : 'btn btn-accent'}
                                 type="submit"
                                 name="_action"
                                 value='delete'
-                                onClick={() => setIsLoading(true)}
+                                disabled={busy}
                             >
-                                {isLoading ? 'Deleting' : 'Delete'}
+                                {busy ? 'Deleting' : 'Delete'}
                             </button>
-                        </Form>
+                        </fetcher.Form>
 
                     </div>
                 </div>
-            </motion.div >
-        </AnimatePresence >
-    </>
+            </motion.div>
+        </>
 
     )
 }

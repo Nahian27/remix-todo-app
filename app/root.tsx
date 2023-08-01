@@ -1,4 +1,3 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction } from "@remix-run/node";
 import stylesheet from "~/tailwind.css";
 import {
@@ -9,10 +8,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import ModeToggle from "./components/ModeToggle";
+// import ModeToggle from "./components/ModeToggle";
 
 export const links: LinksFunction = () => [
-  // ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   { rel: "stylesheet", href: stylesheet }
 ];
 
@@ -26,7 +24,7 @@ export default function App() {
         <Links />
       </head>
       <body className="sm:p-5">
-        <ModeToggle />
+        {/*<ModeToggle />*/}
         <Outlet />
         <ScrollRestoration />
         <Scripts />

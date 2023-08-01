@@ -1,9 +1,9 @@
-import { Form, Link } from "@remix-run/react";
-import { useState } from "react";
+import {Form, Link, useNavigation} from "@remix-run/react";
+import {useState} from "react";
 
 const EditForm: React.FC<{ title: string, content: string }> = (todo) => {
 
-    const [isSaving, setSaving] = useState(false)
+    const busy=useNavigation().formData
 
     return (
         <>
@@ -16,13 +16,13 @@ const EditForm: React.FC<{ title: string, content: string }> = (todo) => {
                     Back
                 </Link>
                 <button
-                    className={isSaving ? 'btn btn-warning' : 'btn btn-primary'}
+                    className={busy ? 'btn btn-warning' : 'btn btn-primary'}
                     type="submit"
                     name="_action"
                     value='delete'
-                    onClick={() => setSaving(true)}
+                    disabled={!!busy}
                 >
-                    {isSaving ? 'Saving...' : 'Save Changes'}
+                    {busy ? 'Saving' : 'Save'}
                 </button>
 
             </Form>
